@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pblktm/pages/splashscreen.dart';
-import 'dart:math';
 
 void main() {
   runApp(const Home());
