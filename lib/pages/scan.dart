@@ -1,13 +1,37 @@
 import 'package:flutter/material.dart';
 
-class ScanPage extends StatefulWidget {
-  ScanPage({super.key});
-
-  @override
-  State<StatefulWidget> createState() => _ScanPage();
+void main() {
+  runApp(const Scan());
 }
 
-class _ScanPage extends State<ScanPage> {
+class Scan extends StatelessWidget {
+  const Scan({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 255, 0, 0)),
+        useMaterial3: true,
+      ),
+      home: const ScanScreen(title: 'Welcome'),
+    );
+  }
+}
+
+class ScanScreen extends StatefulWidget {
+  const ScanScreen({Key? key, required this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  State<ScanScreen> createState() => ScanPage();
+}
+
+class ScanPage extends State<ScanScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -92,12 +116,11 @@ class _ScanPage extends State<ScanPage> {
                     top: 8,
                     height: 8,
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: const Color(0xffffffff), width: 2),
-                      ),
-                      child: Container()
-                    ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: const Color(0xffffffff), width: 2),
+                        ),
+                        child: Container()),
                   ),
                 ],
               ),

@@ -52,8 +52,8 @@ class OnboardingScreen extends StatelessWidget {
               ),
             ),
             Positioned(
-              left: 61,
-              top: 406,
+              left: 90,
+              top: 320,
               child: Text(
                 'Welcome to\nKTM Scan.',
                 textAlign: TextAlign.center,
@@ -68,8 +68,8 @@ class OnboardingScreen extends StatelessWidget {
               ),
             ),
             Positioned(
-              left: 87,
-              top: 600, // Adjust the top position to position it below the text
+              left: 97,
+              top: 550, // Adjust the top position to position it below the text
               child: GestureDetector(
                 onTap: () {
                   // Navigate to the Home screen
@@ -125,8 +125,8 @@ class OnboardingScreen extends StatelessWidget {
               ),
             ),
             Positioned(
-              left: 91,
-              top: 528,
+              left: 97,
+              top: 518,
               child: Text(
                 'Your Best Money Transfer Partner.',
                 textAlign: TextAlign.left,
@@ -141,10 +141,10 @@ class OnboardingScreen extends StatelessWidget {
               ),
             ),
             Positioned(
-                left: 119,
-                width: 83,
-                top: 296,
-                height: 83,
+                left: 115,
+                width: 95,
+                top: 200,
+                height: 95,
                 child: Container(
                     width: 83,
                     height: 83,
@@ -153,10 +153,10 @@ class OnboardingScreen extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.elliptical(83, 83)),
                     ))),
             Positioned(
-                left: 172,
-                width: 83,
-                top: 296,
-                height: 83,
+                left: 182,
+                width: 95,
+                top: 200,
+                height: 95,
                 child: Container(
                     width: 83,
                     height: 83,

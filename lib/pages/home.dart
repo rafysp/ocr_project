@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pblktm/pages/scan.dart';
 import 'package:pblktm/pages/splashscreen.dart';
 
 void main() {
@@ -6,7 +7,7 @@ void main() {
 }
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  const Home({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,228 +17,182 @@ class Home extends StatelessWidget {
         scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
       ),
       home: Scaffold(
-        body: ListView(children: [
-          HomeScreen(),
-        ]),
+        body: HomeScreen(),
       ),
     );
   }
 }
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: Container(
-          width: 800,
-          height: 812,
-          decoration: BoxDecoration(
-            color: const Color(0xffffffff),
-            borderRadius: BorderRadius.circular(25),
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.17,
+            left: 40,
+            right: 40,
+            child: Container(
+              width: 310,
+              height: 172,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: const Color.fromRGBO(83, 102, 190, 1),
+                image: DecorationImage(
+                  image: AssetImage('assets/v1.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 14, top: 16),
+                    child: Text(
+                      'Home',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'DM Sans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                        height: 1.3125,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 14),
+                    child: Text(
+                      'KTM Scan',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'DM Sans',
+                        fontSize: 12,
+                        letterSpacing: 0,
+                        fontWeight: FontWeight.normal,
+                        height: 1.5,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-          child: Stack(children: <Widget>[
-            Positioned(
-                top: MediaQuery.of(context).size.height *
-                    0.15, // Adjust this value for vertical position
-                left: 40,
-                right: 0,
+          Positioned(
+            top: 340,
+            left: 40,
+            child: Container(
+              width: 310,
+              height: 172,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: const Color.fromRGBO(142, 223, 235, 1),
+                image: DecorationImage(
+                  image: AssetImage('assets/v1.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 14, top: 29),
+                    child: Text(
+                      'Silahkan Klik Tombol Scan\nuntuk Melakukan Scan KTM',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'DM Sans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                        height: 1.3125,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 40, left: 170),
+                    child: Container(
+                      width: 100,
+                      height: 50,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Scan(),
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          padding: const EdgeInsets.all(8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Scan',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'DM Sans',
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            width: 50,
+            height: 50,
+            top: 50,
+            left: 300,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(64),
+                image: DecorationImage(
+                  image: AssetImage('assets/profil.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 50,
+            left: 40,
+            child: Container(
+              height: 70,
+              child: FittedBox(
+                alignment: Alignment.center,
                 child: Container(
-                    width: 310,
-                    height: 374,
-                    child: Stack(children: <Widget>[
-                      Positioned(
-                          top: 0,
-                          left: 0,
-                          child: Container(
-                              width: 310.0000915527344,
-                              height: 171,
-                              child: Stack(children: <Widget>[
-                                Positioned(
-                                    top: 0,
-                                    left: 0,
-                                    child: Container(
-                                        width: 310,
-                                        height: 171,
-                                        child: Stack(children: <Widget>[
-                                          Positioned(
-                                              top: 0,
-                                              left: 0,
-                                              child: Container(
-                                                  width: 310,
-                                                  height: 171,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(20),
-                                                      topRight:
-                                                          Radius.circular(20),
-                                                      bottomLeft:
-                                                          Radius.circular(20),
-                                                      bottomRight:
-                                                          Radius.circular(20),
-                                                    ),
-                                                    color: Color.fromRGBO(
-                                                        83, 102, 190, 1),
-                                                  ))),
-                                          Positioned(
-                                              top: 136,
-                                              left: 234,
-                                              child: Text(
-                                                'KTM Scan',
-                                                textAlign: TextAlign.right,
-                                                style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        255, 255, 255, 1),
-                                                    fontFamily: 'DM Sans',
-                                                    fontSize: 12,
-                                                    letterSpacing:
-                                                        0 /*percentages not used in flutter. defaulting to zero*/,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    height: 1.5),
-                                              )),
-                                          Positioned(
-                                              top: 16,
-                                              left: 14,
-                                              child: Container(
-                                                  width: 148,
-                                                  height: 29,
-                                                  child:
-                                                      Stack(children: <Widget>[
-                                                    Positioned(
-                                                        top: 0,
-                                                        left: 0,
-                                                        child: Text(
-                                                          'Selamat Datang',
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style: TextStyle(
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      255,
-                                                                      255,
-                                                                      255,
-                                                                      1),
-                                                              fontFamily:
-                                                                  'DM Sans',
-                                                              fontSize: 16,
-                                                              letterSpacing:
-                                                                  0 /*percentages not used in flutter. defaulting to zero*/,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                              height: 1.3125),
-                                                        )),
-                                                  ]))),
-                                        ]))),
-                                Positioned(
-                                    top: 0,
-                                    left: 0,
-                                    child: //Mask holder Template
-                                        Container(
-                                            width: 310,
-                                            height: 171,
-                                            child: null)),
-                              ]))),
-                      Positioned(
-                          top: 202,
-                          left: 0,
-                          child: Container(
-                              width: 310.0000915527344,
-                              height: 172,
-                              child: Stack(children: <Widget>[
-                                Positioned(
-                                    top: 0,
-                                    left: 0,
-                                    child: Container(
-                                        width: 310,
-                                        height: 171,
-                                        child: Stack(children: <Widget>[
-                                          Positioned(
-                                              top: 0,
-                                              left: 0,
-                                              child: Container(
-                                                  width: 310,
-                                                  height: 171,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(20),
-                                                      topRight:
-                                                          Radius.circular(20),
-                                                      bottomLeft:
-                                                          Radius.circular(20),
-                                                      bottomRight:
-                                                          Radius.circular(20),
-                                                    ),
-                                                    color: Color.fromRGBO(
-                                                        142, 223, 235, 1),
-                                                  ))),
-                                          Positioned(
-                                              top: 134,
-                                              left: 234,
-                                              child: Text(
-                                                'KTM Scan',
-                                                textAlign: TextAlign.right,
-                                                style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        255, 255, 255, 1),
-                                                    fontFamily: 'DM Sans',
-                                                    fontSize: 12,
-                                                    letterSpacing:
-                                                        0 /*percentages not used in flutter. defaulting to zero*/,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    height: 1.5),
-                                              )),
-                                          Positioned(
-                                              top: 29,
-                                              left: 14,
-                                              child: Container(
-                                                  width: 187,
-                                                  height: 63,
-                                                  child:
-                                                      Stack(children: <Widget>[
-                                                    Positioned(
-                                                        top: 0,
-                                                        left: 0,
-                                                        child: Text(
-                                                          'Silahkan Klik Tombol Scan\nuntuk Melakukan Scan KTM',
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style: TextStyle(
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      255,
-                                                                      255,
-                                                                      255,
-                                                                      1),
-                                                              fontFamily:
-                                                                  'DM Sans',
-                                                              fontSize: 16,
-                                                              letterSpacing:
-                                                                  0 /*percentages not used in flutter. defaulting to zero*/,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                              height: 1.3125),
-                                                        )),
-                                                  ]))),
-                                        ]))),
-                                Positioned(
-                                    top: 1,
-                                    left: 0,
-                                    child: //Mask holder Template
-                                        Container(
-                                            width: 310,
-                                            height: 171,
-                                            child: null)),
-                              ]))),
-                    ]))),
-          ])),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 15, vertical: 10), // Adjust padding as needed
+                  // decoration: BoxDecoration(
+                  //   borderRadius: BorderRadius.circular(20),
+                  //   color: const Color.fromRGBO(81, 101, 191, 1),
+                  // ),
+                  child: Text(
+                    'Selamat Datang,\nRafy Shah',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
