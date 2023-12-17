@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                         color: Colors.white,
                         fontFamily: 'DM Sans',
                         fontSize: 16,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                         height: 1.3125,
                       ),
                     ),
@@ -183,7 +183,8 @@ class HomeScreen extends StatelessWidget {
                   child: Text(
                     'Selamat Datang,\nRafy Shah',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Color(0xFF5366BE),
+                      fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),

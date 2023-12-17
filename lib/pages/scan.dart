@@ -1,11 +1,41 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:dotted_border/dotted_border.dart';
 
-void main() {
-  runApp(const Scan());
+class Scan extends StatefulWidget {
+  const Scan({Key? key}) : super(key: key);
+
+  @override
+  _ScanState createState() => _ScanState();
 }
 
-class Scan extends StatelessWidget {
-  const Scan({Key? key}) : super(key: key);
+class _ScanState extends State<Scan> {
+  File? imageFile; // Store the picked image file
+  final picker = ImagePicker();
+
+  Future<void> showPictureDialog() async {
+    await showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(title: const Text('Select Action'), children: [
+            SimpleDialogOption(
+              onPressed: () {
+                getFromCamera();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Camera'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                getFromGallery();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Gallery'),
+            )
+          ]);
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,259 +43,226 @@ class Scan extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 255, 0, 0)),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 255, 0, 0),
+        ),
         useMaterial3: true,
       ),
-      home: const ScanScreen(title: 'Welcome'),
-    );
-  }
-}
-
-class ScanScreen extends StatefulWidget {
-  const ScanScreen({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<ScanScreen> createState() => ScanPage();
-}
-
-class ScanPage extends State<ScanScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Container(
-        width: 375,
-        height: 812,
-        decoration: BoxDecoration(
-          color: const Color(0xffffffff),
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              left: 0,
-              width: 375,
-              top: 0,
-              height: 812,
-              child: Container(
-                width: 375,
-                height: 812,
-                decoration: BoxDecoration(
-                  color: const Color(0xffffffff),
-                ),
-              ),
+      home: Scaffold(
+        body: Container(
+          color: Colors.white,
+          child: Container(
+            width: 375,
+            height: 812,
+            decoration: BoxDecoration(
+              color: const Color(0xffffffff),
+              borderRadius: BorderRadius.circular(25),
             ),
-            Positioned(
-              left: 35,
-              width: 63,
-              top: 39,
-              height: 42,
-              child: Container(
-                width: 63,
-                height: 42,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: 0,
-                      width: 63,
-                      top: 0,
-                      height: 34.42,
-                      child: Container(
-                        width: 63,
-                        height: 34.42,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff5165bf),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      width: 63,
-                      top: 7.58,
-                      height: 34.42,
-                      child: Container(
-                        width: 63,
-                        height: 34.42,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff5165bf),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              left: 54,
-              width: 24,
-              top: 44,
-              height: 24,
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 5,
-                    width: 14,
-                    top: 8,
-                    height: 8,
-                    child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: const Color(0xffffffff), width: 2),
-                        ),
-                        child: Container()),
+            child: Stack(
+              children: [
+                Container(
+                  width: 375,
+                  height: 812,
+                  decoration: const BoxDecoration(
+                    color: Color(0xffffffff),
                   ),
-                ],
-              ),
-            ),
-            Positioned(
-              left: 58,
-              width: 259,
-              top: 509,
-              height: 128,
-              child: Container(
-                width: 259,
-                height: 128,
-                decoration: BoxDecoration(
-                  color: const Color(0xfff1f5fc),
-                  borderRadius: BorderRadius.circular(25),
                 ),
-              ),
-            ),
-            Positioned(
-              left: 58,
-              width: 259,
-              top: 178,
-              height: 304,
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 0,
-                    width: 259,
-                    top: 0,
-                    height: 304,
-                    child: Container(
-                      width: 259,
-                      height: 304,
-                      decoration: BoxDecoration(
-                        color: const Color(0xfffcfcfc),
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: const [
-                          BoxShadow(
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(
+                        context); // Navigate back to the previous screen
+                  },
+                  child: Container(
+                    width: 200,
+                    height: 200,
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned(
+                          top: 50,
+                          left: 30,
+                          child: Container(
+                            width: 70,
+                            height: 37,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Color.fromRGBO(81, 101, 191, 1),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.arrow_back,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  // second box
+                  margin: const EdgeInsets.only(left: 65, top: 550),
+                  width: 259,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: const Color(0xfff1f5fc),
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+                Container(
+                  // first box
+                  margin: const EdgeInsets.only(left: 65, top: 178),
+                  width: 259,
+                  height: 304,
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: 259,
+                        height: 304,
+                        child: SizedBox.expand(
+                          child: FittedBox(
+                              child: imageFile != null
+                                  ? Image.file(File(imageFile!.path),
+                                      fit: BoxFit.cover)
+                                  : const Icon(
+                                      Icons.image_outlined,
+                                      color: Colors.blueGrey,
+                                    )),
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xfffcfcfc),
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color.fromARGB(11, 219, 4, 4),
+                              offset: Offset(0, 16),
+                              blurRadius: 40,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 259,
+                        height: 304,
+                        decoration: BoxDecoration(
+                          color: const Color(0x0c1c69ff),
+                          borderRadius: BorderRadius.circular(25),
+                          boxShadow: const [
+                            BoxShadow(
                               color: const Color(0x0c8d8d8d),
                               offset: Offset(0, 16),
-                              blurRadius: 40),
-                        ],
+                              blurRadius: 40,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  Positioned(
-                    left: 0,
-                    width: 259,
-                    top: 0,
-                    height: 304,
-                    child: Container(
-                      width: 259,
-                      height: 304,
-                      decoration: BoxDecoration(
-                        color: const Color(0x0c1c69ff),
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: const [
-                          BoxShadow(
-                              color: const Color(0x0c8d8d8d),
-                              offset: Offset(0, 16),
-                              blurRadius: 40),
-                        ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 495,
+                    left: 18,
+                  ), // Adjust the top padding as needed
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          showPictureDialog();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.blue, // Button color
+                        ),
+                        child: Text(
+                          'Pick Image',
+                          style: TextStyle(
+                            color: Colors.white, // Text color
+                          ),
+                        ),
                       ),
-                    ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            imageFile = null;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red, // Button color
+                        ),
+                        child: Text(
+                          'Clear Image',
+                          style: TextStyle(
+                            color: Colors.white, // Text color
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Positioned(
-                    left: 0,
-                    width: 259,
-                    top: 23.16,
-                    height: 22.65,
-                    child: Text(
-                      'Scan KTM',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          decoration: TextDecoration.none,
-                          fontSize: 26,
-                          color: const Color(0xff1e1e1e),
-                          fontFamily: 'Arial-BoldMT',
-                          fontWeight: FontWeight.normal),
-                      maxLines: 9999,
-                      overflow: TextOverflow.ellipsis,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 83, top: 560),
+                  child: Text(
+                    'Please, align QR Code within\nthe frame to make scanning\neasily detectable.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      decoration: TextDecoration.none,
+                      fontSize: 16,
+                      color: const Color(0xff5165bf),
+                      fontFamily: 'Arial-ItalicMT',
+                      fontWeight: FontWeight.normal,
                     ),
+                    maxLines: 9999,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 125, top: 140),
+                  child: Text(
+                    'Scan KTM Anda',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      decoration: TextDecoration.none,
+                      fontSize: 18,
+                      color: const Color(0xff878787),
+                      fontFamily: 'Arial-ItalicMT',
+                      fontWeight: FontWeight.normal,
+                    ),
+                    maxLines: 9999,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              left: 83,
-              top: 525,
-              child: Text(
-                'Please, align QR Code within\nthe frame to make scanning\neasily detectable.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    decoration: TextDecoration.none,
-                    fontSize: 16,
-                    color: const Color(0xff5165bf),
-                    fontFamily: 'Arial-ItalicMT',
-                    fontWeight: FontWeight.normal),
-                maxLines: 9999,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Positioned(
-                left: 88, width: 47, top: 250, height: 47, child: Container()),
-            Positioned(
-                left: 88, width: 47, top: 404, height: 47, child: Container()),
-            Positioned(
-              left: 125,
-              top: 109,
-              child: Text(
-                'Scan KTM Anda',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    decoration: TextDecoration.none,
-                    fontSize: 18,
-                    color: const Color(0xff878787),
-                    fontFamily: 'Arial-ItalicMT',
-                    fontWeight: FontWeight.normal),
-                maxLines: 9999,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Positioned(
-              left: 143,
-              top: 35,
-              child: Text(
-                'Scan KTM',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    decoration: TextDecoration.none,
-                    fontSize: 20,
-                    color: const Color(0xff1e1e1e),
-                    fontFamily: 'Arial-ItalicMT',
-                    fontWeight: FontWeight.normal),
-                maxLines: 9999,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Positioned(
-                left: 240, width: 47, top: 250, height: 47, child: Container()),
-            Positioned(
-                left: 240, width: 47, top: 404, height: 47, child: Container()),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  getFromGallery() async {
+    final PickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (PickedFile != null) {
+      setState(() {
+        imageFile = File(PickedFile.path);
+      });
+    }
+  }
+
+  getFromCamera() async {
+    final PickedFile = await picker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (PickedFile != null) {
+      setState(() {
+        imageFile = File(PickedFile.path);
+      });
+    }
   }
 }
