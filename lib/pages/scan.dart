@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:pblktm/pages/ktm.dart';
 
 class Scan extends StatefulWidget {
   const Scan({Key? key}) : super(key: key);
@@ -103,7 +104,7 @@ class _ScanState extends State<Scan> {
                   // second box
                   margin: const EdgeInsets.only(left: 65, top: 550),
                   width: 259,
-                  height: 120,
+                  height: 100,
                   decoration: BoxDecoration(
                     color: const Color(0xfff1f5fc),
                     borderRadius: BorderRadius.circular(25),
@@ -201,9 +202,9 @@ class _ScanState extends State<Scan> {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 83, top: 560),
+                  margin: const EdgeInsets.only(left: 80, top: 560),
                   child: Text(
-                    'Please, align QR Code within\nthe frame to make scanning\neasily detectable.',
+                    'Pastikan kondisi cahaya cukup \n terang dan teks pada KTM \n terlihat jelas.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       decoration: TextDecoration.none,
@@ -214,6 +215,37 @@ class _ScanState extends State<Scan> {
                     ),
                     maxLines: 9999,
                     overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Positioned(
+                  top: 665,
+                  left: 90,
+                  child: Container(
+                    width: 200, // Adjust the width as needed
+                    height: 50, // Adjust the height as needed
+                    child: ElevatedButton(
+                      onPressed: imageFile != null
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      Ktm(imageFile: imageFile!),
+                                ),
+                              );
+                            }
+                          : null, // Disable button when imageFile is null
+                      style: ElevatedButton.styleFrom(
+                        primary:
+                            Color.fromRGBO(81, 101, 191, 1), // Adjusted color
+                      ),
+                      child: Text(
+                        'Proceed',
+                        style: TextStyle(
+                          color: Colors.white, // White font color
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 Container(

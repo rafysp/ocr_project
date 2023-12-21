@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pblktm/pages/ktm.dart';
+import 'package:pblktm/pages/list.dart';
 import 'package:pblktm/pages/splashscreen.dart';
 import 'package:pblktm/pages/scan.dart';
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pblktm/pages/scan.dart';
 import 'package:pblktm/pages/splashscreen.dart';
+import 'package:pblktm/pages/list.dart';
 
 void main() {
   runApp(const Home());
@@ -102,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 14, top: 29),
                     child: Text(
-                      'Silahkan Klik Tombol Scan\nuntuk Melakukan Scan KTM',
+                      'Silahkan Klik Tombol Pinjam \nuntuk Melakukan Peminjaman',
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'DM Sans',
@@ -122,7 +123,7 @@ class HomeScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Scan(),
+                              builder: (context) => List(),
                             ),
                           );
                         },
@@ -135,7 +136,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            'Scan',
+                            'Pinjam',
                             style: TextStyle(
                               color: Colors.white,
                               fontFamily: 'DM Sans',
