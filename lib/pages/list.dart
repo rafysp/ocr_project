@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pblktm/pages/scan.dart';
+import 'package:pblktm/services/firestore.dart';
 
 class List extends StatefulWidget {
   @override
@@ -7,215 +9,141 @@ class List extends StatefulWidget {
 }
 
 class _ListState extends State<List> {
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      elevation: 4,
-      borderRadius: BorderRadius.circular(25),
-      child: Container(
-        width: 375,
-        height: 812,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: Color.fromRGBO(255, 255, 255, 1),
+  final FirestoreService firestoreService = FirestoreService();
+  final TextEditingController textController = TextEditingController();
+  void openBarangBox({String? id}) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+        content: TextField(
+          controller: textController,
+          decoration: InputDecoration(
+            labelText: 'Nama Barang',
+            labelStyle: TextStyle(color: Colors.black),
+            hintText: 'Masukkan nama barang',
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                  color: Colors.black), // Underline color when focused
+            ),
+          ),
         ),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              width: 375,
-              height: 812,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(255, 255, 255, 1),
-              ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              if (id == null) {
+                firestoreService.addBarang(textController.text);
+              } else {
+                firestoreService.updateBarang(id, textController.text);
+              }
+              textController.clear();
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Color.fromRGBO(
+                  83, 102, 190, 1), // Change to your desired background color
+              onPrimary: Colors.white, // Text color
             ),
-            Container(
-              margin: EdgeInsets.only(top: 45, left: 140),
-              child: Text(
-                'List Barang',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Color.fromRGBO(30, 30, 30, 1),
-                  fontFamily: 'Arial',
-                  fontSize: 20,
-                  fontWeight: FontWeight.normal,
-                  height: 2.1,
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context); // Navigate back to the previous screen
-              },
-              child: Container(
-                width: 200,
-                height: 200,
-                child: Stack(
-                  children: <Widget>[
-                    Positioned(
-                      top: 50,
-                      left: 30,
-                      child: Container(
-                        width: 70,
-                        height: 37,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Color.fromRGBO(81, 101, 191, 1),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Scan()),
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: 175, left: 33),
-                width: 310,
-                height: 62,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Color.fromRGBO(83, 102, 190, 1),
-                ),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 20, top: 15),
-                    child: Text(
-                      'Barang 1',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        fontFamily: 'DM Sans',
-                        fontSize: 16,
-                        letterSpacing: 0,
-                        fontWeight: FontWeight.normal,
-                        height: 1.3125,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Scan()),
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: 275, left: 33),
-                width: 310,
-                height: 62,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Color.fromRGBO(83, 102, 190, 1),
-                ),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 20, top: 15),
-                    child: Text(
-                      'Barang 2',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        fontFamily: 'DM Sans',
-                        fontSize: 16,
-                        letterSpacing: 0,
-                        fontWeight: FontWeight.normal,
-                        height: 1.3125,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Scan()),
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: 375, left: 33),
-                width: 310,
-                height: 62,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Color.fromRGBO(83, 102, 190, 1),
-                ),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 20, top: 15),
-                    child: Text(
-                      'Barang 3',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        fontFamily: 'DM Sans',
-                        fontSize: 16,
-                        letterSpacing: 0,
-                        fontWeight: FontWeight.normal,
-                        height: 1.3125,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Scan()),
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: 475, left: 33),
-                width: 310,
-                height: 62,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Color.fromRGBO(83, 102, 190, 1),
-                ),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 20, top: 15),
-                    child: Text(
-                      'Barang 4',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        fontFamily: 'DM Sans',
-                        fontSize: 16,
-                        letterSpacing: 0,
-                        fontWeight: FontWeight.normal,
-                        height: 1.3125,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+            child: Text('Tambah'),
+          ),
+        ],
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: openBarangBox,
+          backgroundColor: Color.fromRGBO(83, 102, 190, 1),
+          foregroundColor: Colors.white,
+          child: const Icon(Icons.add),
+        ),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: firestoreService.getBarangStream(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final barangList = snapshot.data!.docs;
+
+              return ListView.builder(
+                  itemCount: barangList.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot barang = barangList[index];
+                    String brgID = barang.id;
+                    Map<String, dynamic> barangData =
+                        barang.data() as Map<String, dynamic>;
+                    String brgNama = barangData['nama'];
+
+                    return ListTile(
+                        title: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Scan(
+                                    id: brgID,
+                                    nama: brgNama,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 10),
+                                padding: EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Color.fromRGBO(83, 102, 190, 1),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        brgNama,
+                                        style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(255, 255, 255, 1),
+                                          fontFamily: 'DM Sans',
+                                          fontSize: 16,
+                                          letterSpacing: 0,
+                                          fontWeight: FontWeight.normal,
+                                          height: 1.3125,
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            openBarangBox(id: brgID);
+                                          },
+                                          icon: Icon(Icons.edit,
+                                              color: Colors.white),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            firestoreService
+                                                .deleteBarang(brgID);
+                                          },
+                                          icon: Icon(Icons.delete,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )));
+                  });
+            } else {
+              return const Text("Barang tidak ada");
+            }
+          },
+        ));
   }
 }

@@ -5,13 +5,14 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:pblktm/pages/ktm.dart';
 
 class Scan extends StatefulWidget {
-  const Scan({Key? key}) : super(key: key);
-
+  const Scan({Key? key, required String id, required String nama}) : super(key: key);
+  
   @override
   _ScanState createState() => _ScanState();
 }
 
 class _ScanState extends State<Scan> {
+  
   File? imageFile; // Store the picked image file
   final picker = ImagePicker();
 
@@ -298,3 +299,4 @@ class _ScanState extends State<Scan> {
     }
   }
 }
+
