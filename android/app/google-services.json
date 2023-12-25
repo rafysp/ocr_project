@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "200101973774",
+    "project_id": "ocr-projectpbl",
+    "storage_bucket": "ocr-projectpbl.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200101973774:android:02f2d013e11bd67cee515f",
+        "android_client_info": {
+          "package_name": "com.example.pblktm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXlXhmZsN78JFyfQTuN6ETibsPRRvGpxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

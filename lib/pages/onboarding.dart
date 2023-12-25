@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pblktm/pages/login_auth.dart';
 import 'package:pblktm/pages/splashscreen.dart';
 import 'package:pblktm/pages/home.dart';
 
@@ -76,7 +77,7 @@ class OnboardingScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Home(),
+                      builder: (context) => LoginAuth(),
                     ),
                   );
                 },

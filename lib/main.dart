@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pblktm/pages/ktm.dart';
 import 'package:pblktm/pages/list.dart';
+import 'package:pblktm/pages/login.dart';
 import 'package:pblktm/pages/splashscreen.dart';
 import 'package:pblktm/pages/scan.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

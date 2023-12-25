@@ -1,32 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pblktm/pages/scan.dart';
 import 'package:pblktm/pages/splashscreen.dart';
 import 'package:pblktm/pages/list.dart';
 
-void main() {
-  runApp(const Home());
-}
-
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({Key? key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
-      ),
-      home: Scaffold(
-        body: HomeScreen(),
-      ),
-    );
-  }
+  State<Home> createState() => _HomeScreenState();
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key});
-
+class _HomeScreenState extends State<Home> {
+  final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -175,19 +161,43 @@ class HomeScreen extends StatelessWidget {
               child: FittedBox(
                 alignment: Alignment.center,
                 child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 15, vertical: 10), // Adjust padding as needed
-                  // decoration: BoxDecoration(
-                  //   borderRadius: BorderRadius.circular(20),
-                  //   color: const Color.fromRGBO(81, 101, 191, 1),
-                  // ),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   child: Text(
-                    'Selamat Datang,\nRafy Shah',
+                    'Selamat Datang,\n${user.email}',
                     style: TextStyle(
                       color: Color(0xFF5366BE),
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 150, // Adjust vertical position from the bottom
+            left: 40,
+            right: 40,
+            child: SizedBox(
+              // Wrap the button in a SizedBox to adjust its dimensions
+              width: double
+                  .infinity, // Use double.infinity to extend the button to the full width
+              height: 50, // Adjust the button's height
+              child: MaterialButton(
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                },
+                color: Color(0xFF5366BE),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  'Log Out',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'DM Sans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
