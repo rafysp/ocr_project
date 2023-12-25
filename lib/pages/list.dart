@@ -54,6 +54,7 @@ class _ListState extends State<List> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(title: Text("List Barang")),
         floatingActionButton: FloatingActionButton(
           onPressed: openBarangBox,
           backgroundColor: Color.fromRGBO(83, 102, 190, 1),
