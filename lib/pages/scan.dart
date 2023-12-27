@@ -6,8 +6,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:pblktm/pages/ktm.dart';
 
 class Scan extends StatefulWidget {
-  
-
   const Scan({
     Key? key,
   }) : super(key: key);
