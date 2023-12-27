@@ -1,20 +1,30 @@
 import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:pblktm/pages/ktm.dart';
 
 class Scan extends StatefulWidget {
-  const Scan({Key? key, required String id, required String nama}) : super(key: key);
-  
+  const Scan({Key? key, required String id, required String nama})
+      : super(key: key);
+
   @override
   _ScanState createState() => _ScanState();
 }
 
 class _ScanState extends State<Scan> {
-  
   File? imageFile; // Store the picked image file
   final picker = ImagePicker();
+
+  Future<void> fetchData() async {
+    var response = await http.get(Uri.parse('http://127.0.0.1:5000/data'));
+    if (response.statusCode == 200) {
+      print('Data fetched: ${response.body}');
+    } else {
+      print('Failed to fetch data');
+    }
+  }
 
   Future<void> showPictureDialog() async {
     await showDialog<void>(
@@ -218,15 +228,25 @@ class _ScanState extends State<Scan> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Positioned(
-                  top: 665,
-                  left: 90,
-                  child: Container(
-                    width: 200, // Adjust the width as needed
-                    height: 50, // Adjust the height as needed
-                    child: ElevatedButton(
-                      onPressed: imageFile != null
-                          ? () {
+                ElevatedButton(
+                  onPressed: imageFile != null
+                      ? () async {
+                          try {
+                            var request = http.MultipartRequest(
+                              'POST',
+                              Uri.parse(
+                                  'http://192.168.0.155:5000/upload'), // Replace with your Flask server endpoint
+                            );
+                            request.files.add(
+                              await http.MultipartFile.fromPath(
+                                'img', // Replace 'img' with the name of the file parameter expected by your Flask server
+                                imageFile!.path,
+                              ),
+                            );
+                            var response = await request.send();
+                            if (response.statusCode == 200) {
+                              print('Image uploaded successfully');
+                              // Proceed to the Ktm screen if needed
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -234,18 +254,24 @@ class _ScanState extends State<Scan> {
                                       Ktm(imageFile: imageFile!),
                                 ),
                               );
+                            } else {
+                              print(
+                                  'Image upload failed with status code: ${response.statusCode}');
+                              // Handle other status codes if needed
                             }
-                          : null, // Disable button when imageFile is null
-                      style: ElevatedButton.styleFrom(
-                        primary:
-                            Color.fromRGBO(81, 101, 191, 1), // Adjusted color
-                      ),
-                      child: Text(
-                        'Proceed',
-                        style: TextStyle(
-                          color: Colors.white, // White font color
-                        ),
-                      ),
+                          } catch (e) {
+                            print('Exception during image upload: $e');
+                            // Handle exceptions here
+                          }
+                        }
+                      : null, // Disable button when imageFile is null
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(81, 101, 191, 1), // Adjusted color
+                  ),
+                  child: Text(
+                    'Proceed',
+                    style: TextStyle(
+                      color: Colors.white, // White font color
                     ),
                   ),
                 ),
@@ -299,4 +325,3 @@ class _ScanState extends State<Scan> {
     }
   }
 }
-
