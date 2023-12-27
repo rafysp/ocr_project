@@ -74,21 +74,11 @@ class _ListState extends State<List> {
                     String brgID = barang.id;
                     Map<String, dynamic> barangData =
                         barang.data() as Map<String, dynamic>;
-                    String brgNama = barangData['nama'];
+                    String brgNama = barangData['namaBarang'];
 
                     return ListTile(
                         title: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Scan(
-                                    id: brgID,
-                                    nama: brgNama,
-                                  ),
-                                ),
-                              );
-                            },
+                            onTap: () {},
                             child: Padding(
                               padding: const EdgeInsets.only(top: 10),
                               child: Container(

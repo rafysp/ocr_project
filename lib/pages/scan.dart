@@ -6,8 +6,11 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:pblktm/pages/ktm.dart';
 
 class Scan extends StatefulWidget {
-  const Scan({Key? key, required String id, required String nama})
-      : super(key: key);
+  
+
+  const Scan({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _ScanState createState() => _ScanState();
@@ -228,50 +231,52 @@ class _ScanState extends State<Scan> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: imageFile != null
-                      ? () async {
-                          try {
-                            var request = http.MultipartRequest(
-                              'POST',
-                              Uri.parse(
-                                  'http://192.168.0.155:5000/upload'), // Replace with your Flask server endpoint
-                            );
-                            request.files.add(
-                              await http.MultipartFile.fromPath(
-                                'img', // Replace 'img' with the name of the file parameter expected by your Flask server
-                                imageFile!.path,
-                              ),
-                            );
-                            var response = await request.send();
-                            if (response.statusCode == 200) {
-                              print('Image uploaded successfully');
-                              // Proceed to the Ktm screen if needed
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      Ktm(imageFile: imageFile!),
+                Container(
+                  padding: const EdgeInsets.only(left: 140, top: 650),
+                  child: ElevatedButton(
+                    onPressed: imageFile != null
+                        ? () async {
+                            try {
+                              var request = http.MultipartRequest(
+                                'POST',
+                                Uri.parse('http://192.168.0.155:5000/upload'),
+                              );
+                              request.files.add(
+                                await http.MultipartFile.fromPath(
+                                  'img',
+                                  imageFile!.path,
                                 ),
                               );
-                            } else {
-                              print(
-                                  'Image upload failed with status code: ${response.statusCode}');
-                              // Handle other status codes if needed
+                              var response = await request.send();
+                              if (response.statusCode == 200) {
+                                print('Image uploaded successfully');
+                                // Proceed to the Ktm screen if needed
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Ktm(),
+                                  ),
+                                );
+                              } else {
+                                print(
+                                    'Image upload failed with status code: ${response.statusCode}');
+                                // Handle other status codes if needed
+                              }
+                            } catch (e) {
+                              print('Exception during image upload: $e');
+                              // Handle exceptions here
                             }
-                          } catch (e) {
-                            print('Exception during image upload: $e');
-                            // Handle exceptions here
                           }
-                        }
-                      : null, // Disable button when imageFile is null
-                  style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(81, 101, 191, 1), // Adjusted color
-                  ),
-                  child: Text(
-                    'Proceed',
-                    style: TextStyle(
-                      color: Colors.white, // White font color
+                        : null, // Disable button when imageFile is null
+                    style: ElevatedButton.styleFrom(
+                      primary:
+                          Color.fromRGBO(81, 101, 191, 1), // Adjusted color
+                    ),
+                    child: Text(
+                      'Proceed',
+                      style: TextStyle(
+                        color: Colors.white, // White font color
+                      ),
                     ),
                   ),
                 ),

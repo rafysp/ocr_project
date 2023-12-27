@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pblktm/pages/history.dart';
 import 'package:pblktm/pages/scan.dart';
 import 'package:pblktm/pages/splashscreen.dart';
 import 'package:pblktm/pages/list.dart';
@@ -15,9 +16,9 @@ class _HomeScreenState extends State<Home> {
   final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Stack(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Stack(
         children: <Widget>[
           Positioned(
             top: MediaQuery.of(context).size.height * 0.17,
@@ -109,7 +110,7 @@ class _HomeScreenState extends State<Home> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => List(),
+                              builder: (context) => Scan(),
                             ),
                           );
                         },
@@ -175,7 +176,7 @@ class _HomeScreenState extends State<Home> {
             ),
           ),
           Positioned(
-            bottom: 150, // Adjust vertical position from the bottom
+            bottom: 70, // Adjust vertical position from the bottom
             left: 40,
             right: 40,
             child: SizedBox(
@@ -187,12 +188,76 @@ class _HomeScreenState extends State<Home> {
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
                 },
-                color: Color(0xFF5366BE),
+                color: Colors.red,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   'Log Out',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'DM Sans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 200, // Adjust vertical position from the bottom
+            left: 40,
+            right: 40,
+            child: SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: MaterialButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => List(),
+                    ),
+                  );
+                },
+                color: Color.fromRGBO(83, 102, 190, 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  'List Barang',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'DM Sans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 140, // Adjust vertical position from the bottom
+            left: 40,
+            right: 40,
+            child: SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: MaterialButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => History(),
+                    ),
+                  );
+                },
+                color: Color.fromRGBO(83, 102, 190, 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  'History Pinjam',
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'DM Sans',

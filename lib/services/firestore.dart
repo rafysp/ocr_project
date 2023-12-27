@@ -6,7 +6,7 @@ class FirestoreService {
 
   // CREATE:
   Future<void> addBarang(String Barang) {
-    return barang.add({'nama': Barang, 'timestamp': Timestamp.now()});
+    return barang.add({'namaBarang': Barang, 'timestamp': Timestamp.now()});
   }
 
   // READ
@@ -20,7 +20,7 @@ class FirestoreService {
   // UPDATE
   Future<void> updateBarang(String id, String Barang) {
     return barang.doc(id).update({
-      'nama': Barang,
+      'namaBarang': Barang,
       'timestamp': Timestamp.now(),
     });
   }

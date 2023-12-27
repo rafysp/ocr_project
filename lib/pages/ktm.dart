@@ -1,316 +1,187 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pblktm/pages/pinjam.dart';
+import 'package:pblktm/pages/home.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pblktm/pages/pinjam.dart';
 
 class Ktm extends StatefulWidget {
-  final File? imageFile; // Define imageFile as a parameter
-
-  const Ktm({Key? key, this.imageFile}) : super(key: key);
-
   @override
   _KtmState createState() => _KtmState();
 }
 
 class _KtmState extends State<Ktm> {
+  late Stream<QuerySnapshot> _stream;
+  String? selectedBarang;
+
+  @override
+  void initState() {
+    super.initState();
+    _stream = FirebaseFirestore.instance
+        .collection('responses')
+        .orderBy('timestamp')
+        .snapshots();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Material(
-        elevation: 4,
-        borderRadius: BorderRadius.circular(25),
-        child: Container(
-          width: 500,
-          height: 812,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: Color.fromRGBO(255, 255, 255, 1),
-          ),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                width: 375,
-                height: 812,
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 1),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 45, left: 140),
-                child: Text(
-                  'KTM Anda',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Color.fromRGBO(30, 30, 30, 1),
-                    fontFamily: 'Arial',
-                    fontSize: 20,
-                    fontWeight: FontWeight.normal,
-                    height: 2.1,
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(
-                      context); // Navigate back to the previous screen
-                },
-                child: Container(
-                  width: 200,
-                  height: 200,
-                  child: Stack(
-                    children: <Widget>[
-                      Positioned(
-                        top: 50,
-                        left: 30,
-                        child: Container(
-                          width: 70,
-                          height: 37,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Color.fromRGBO(81, 101, 191, 1),
-                          ),
-                          child: Center(
-                            child: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 150,
-                left: 29,
+      appBar: AppBar(
+        title: Text('KTP Anda'),
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _stream,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('No data available'));
+          } else {
+            var latestDocument = snapshot.data!.docs.last;
+            var data = latestDocument.data() as Map<String, dynamic>;
+
+            return SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Personal Information',
-                      textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Color.fromRGBO(81, 100, 191, 1),
                         fontFamily: 'Arial',
                         fontSize: 17,
                         letterSpacing: 0,
                         fontWeight: FontWeight.normal,
-                        height: 1.2941176470588236,
+                        height: 1.3,
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Container(
-                      width: 331,
-                      height: 38,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromRGBO(244, 244, 244, 1),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Nomer Induk Mahasiswa',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Color.fromRGBO(81, 100, 191, 1),
-                                fontFamily: 'Arial',
-                                fontSize: 12,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.normal,
-                                height: 1.75,
-                              ),
-                            ),
-                            Text(
-                              '2141720244',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: Color.fromRGBO(0, 26, 76, 1),
-                                fontFamily: 'Arial',
-                                fontSize: 12,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.normal,
-                                height: 1.75,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    SizedBox(height: 20),
+                    buildInfoRow('Nomer Induk Kependudukan', data['nik']),
+                    buildInfoRow('Nama', data['nama']),
+                    buildInfoRow('TTL', data['ttl']),
+                    buildInfoRow('Alamat', data['alamat']),
+                    SizedBox(height: 20),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('barang')
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.docs.isEmpty) {
+                          return Text('No data available');
+                        } else {
+                          var barangList = snapshot.data!.docs;
+                          List<String> options = [];
+
+                          for (var barang in barangList) {
+                            var barangData =
+                                barang.data() as Map<String, dynamic>;
+                            options.add(barangData['namaBarang']);
+                          }
+
+                          return DropdownButton<String>(
+                            hint: Text('Pilih Barang'),
+                            value: selectedBarang,
+                            onChanged: (String? value) {
+                              setState(() {
+                                selectedBarang = value;
+                              });
+                            },
+                            items: options.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
                     ),
-                    SizedBox(height: 10),
-                    Container(
-                      width: 331,
-                      height: 38,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromRGBO(244, 244, 244, 1),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Nama',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Color.fromRGBO(81, 100, 191, 1),
-                                fontFamily: 'Arial',
-                                fontSize: 12,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.normal,
-                                height: 1.75,
-                              ),
-                            ),
-                            Text(
-                              'M. RAFY SHAH PAHLEVI',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: Color.fromRGBO(0, 26, 76, 1),
-                                fontFamily: 'Arial',
-                                fontSize: 12,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.normal,
-                                height: 1.75,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        _createPinjamanCollection(data);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Home(),
+                          ),
+                        );
+                      },
+                      child: Text('Pinjam'),
                     ),
-                    SizedBox(height: 10),
-                    Container(
-                      width: 331,
-                      height: 38,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromRGBO(244, 244, 244, 1),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'TTL',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Color.fromRGBO(81, 100, 191, 1),
-                                fontFamily: 'Arial',
-                                fontSize: 12,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.normal,
-                                height: 1.75,
-                              ),
-                            ),
-                            Text(
-                              'MALANG, 10 JANUARI 1990',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: Color.fromRGBO(0, 26, 76, 1),
-                                fontFamily: 'Arial',
-                                fontSize: 12,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.normal,
-                                height: 1.75,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      width: 331,
-                      height: 38,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromRGBO(244, 244, 244, 1),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Prodi',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Color.fromRGBO(81, 100, 191, 1),
-                                fontFamily: 'Arial',
-                                fontSize: 12,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.normal,
-                                height: 1.75,
-                              ),
-                            ),
-                            Text(
-                              'D-IV T. INFORMATIKA',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: Color.fromRGBO(0, 26, 76, 1),
-                                fontFamily: 'Arial',
-                                fontSize: 12,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.normal,
-                                height: 1.75,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      width: 331,
-                      height: 38,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromRGBO(244, 244, 244, 1),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Alamat',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Color.fromRGBO(81, 100, 191, 1),
-                                fontFamily: 'Arial',
-                                fontSize: 12,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.normal,
-                                height: 1.75,
-                              ),
-                            ),
-                            Text(
-                              'Jalan Kebenaran No. 1, Malang',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: Color.fromRGBO(0, 26, 76, 1),
-                                fontFamily: 'Arial',
-                                fontSize: 12,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.normal,
-                                height: 1.75,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
+            );
+          }
+        },
       ),
     );
+  }
+
+  Widget buildInfoRow(String label, String value) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              color: Color.fromRGBO(81, 100, 191, 1),
+              fontFamily: 'Arial',
+              fontSize: 12,
+              letterSpacing: 0,
+              fontWeight: FontWeight.normal,
+              height: 1.75,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              color: Color.fromRGBO(0, 26, 76, 1),
+              fontFamily: 'Arial',
+              fontSize: 12,
+              letterSpacing: 0,
+              fontWeight: FontWeight.normal,
+              height: 1.75,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _createPinjamanCollection(Map<String, dynamic> data) {
+    if (selectedBarang != null) {
+      Map<String, dynamic> pinjamanData = {
+        'nama': data['nama'],
+        'nik': data['nik'],
+        'namaBarang': selectedBarang!,
+        'status': 'Dipinjam',
+        'timestamp': Timestamp.now()
+      };
+
+      FirebaseFirestore.instance
+          .collection('pinjaman')
+          .add(pinjamanData)
+          .then((_) {
+        print('Data added to pinjaman collection');
+      }).catchError((error) {
+        print('Error adding data to pinjaman collection: $error');
+      });
+    }
   }
 }
